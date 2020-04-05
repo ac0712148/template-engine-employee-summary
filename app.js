@@ -13,6 +13,82 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+const questions = [{
+    type: "input",
+    name: "name",
+    message: "What is your name?"
+},{
+    type: "input",
+    name: "id",
+    message: "What is your ID?"
+},{
+    type: "input",
+    name: "email",
+    message: "What is your email?"
+},{
+    type: "list",
+    name: "role",
+    message: "What is your role?",
+    choices: ["Intern","Engineer","Manager"]
+}];
+const internQuestion = [{
+    type: "input",
+    name: "specific",
+    message: "What is the name of your school?"
+}];
+const engineerQuestion = [{
+    type: "input",
+    name: "specific",
+    message: "What is your Github username?"
+}];
+const managerQuestion = [{
+    type: "input",
+    name: "specific",
+    message: "What is your office number?"
+}];
+
+inquirer
+.prompt(questions)
+.then(input => {
+    if(input.role === "Intern") {
+        inquirer
+        .prompt(internQuestion)
+        .then(answer => {
+            console.log("The name is: " + input.name);
+            console.log("The id is: " + input.id);
+            console.log("The email is: " + input.email);
+            console.log("The role is: " + input.role);
+            console.log("The school is: " + answer.school);
+        })
+    }
+    else if(input.role === "Engineer") {
+        inquirer
+        .prompt(engineerQuestion)
+        .then(answer => {
+            console.log("The name is: " + input.name);
+            console.log("The id is: " + input.id);
+            console.log("The email is: " + input.email);
+            console.log("The role is: " + input.role);
+            console.log("The github is: " + answer.github);
+        })
+    }
+    else {
+        inquirer
+        .prompt(managerQuestion)
+        .then(answer => {
+            console.log("The name is: " + input.name);
+            console.log("The id is: " + input.id);
+            console.log("The email is: " + input.email);
+            console.log("The role is: " + input.role);
+            console.log("The number is: " + answer.officeNumber);
+        })
+    }
+})
+.catch(error => {
+    console.log(error);
+    process.exit(1);
+})
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
