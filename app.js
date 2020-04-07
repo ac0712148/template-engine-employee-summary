@@ -11,78 +11,86 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
 
+///////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-const questions = [{
+const managerQuestions = [{
     type: "input",
     name: "name",
-    message: "What is your name?"
+    message: "What is your manager's name?"
 },{
     type: "input",
     name: "id",
-    message: "What is your ID?"
+    message: "What is your manager's ID?"
 },{
     type: "input",
     name: "email",
-    message: "What is your email?"
+    message: "What is your manager's email?"
+},{
+    type: "input",
+    name: "specific",
+    message: "What is your manager's office number?"
 },{
     type: "list",
     name: "role",
-    message: "What is your role?",
-    choices: ["Intern","Engineer","Manager"]
-}];
-const internQuestion = [{
-    type: "input",
-    name: "specific",
-    message: "What is the name of your school?"
-}];
-const engineerQuestion = [{
-    type: "input",
-    name: "specific",
-    message: "What is your Github username?"
-}];
-const managerQuestion = [{
-    type: "input",
-    name: "specific",
-    message: "What is your office number?"
+    message: "Which type of team member would you like to add?",
+    choices: ["Intern","Engineer","I don't want to add any more team members"]
 }];
 
+const engineerQuestions = [{
+    type: "input",
+    name: "name",
+    message: "What is your engineer's name?"
+},{
+    type: "input",
+    name: "id",
+    message: "What is your engineer's ID?"
+},{
+    type: "input",
+    name: "email",
+    message: "What is your engineer's email?"
+},{
+    type: "input",
+    name: "specific",
+    message: "What is your engineer's Github username?"
+},{
+    type: "list",
+    name: "role",
+    message: "Which type of team member would you like to add?",
+    choices: ["Intern","Engineer","I don't want to add any more team members"]
+}];
+
+const internQuestions = [{
+    type: "input",
+    name: "name",
+    message: "What is your intern's name?"
+},{
+    type: "input",
+    name: "id",
+    message: "What is your intern's ID?"
+},{
+    type: "input",
+    name: "email",
+    message: "What is your intern's email?"
+},{
+    type: "input",
+    name: "specific",
+    message: "What is your intern's school?"
+},{
+    type: "list",
+    name: "role",
+    message: "Which type of team member would you like to add?",
+    choices: ["Intern","Engineer","I don't want to add any more team members"]
+}];
+var memberType;
 inquirer
-.prompt(questions)
+.prompt(managerQuestions)
 .then(input => {
-    if(input.role === "Intern") {
-        inquirer
-        .prompt(internQuestion)
-        .then(answer => {
-            console.log("The name is: " + input.name);
-            console.log("The id is: " + input.id);
-            console.log("The email is: " + input.email);
-            console.log("The role is: " + input.role);
-            console.log("The school is: " + answer.school);
-        })
-    }
-    else if(input.role === "Engineer") {
-        inquirer
-        .prompt(engineerQuestion)
-        .then(answer => {
-            console.log("The name is: " + input.name);
-            console.log("The id is: " + input.id);
-            console.log("The email is: " + input.email);
-            console.log("The role is: " + input.role);
-            console.log("The github is: " + answer.github);
-        })
-    }
-    else {
-        inquirer
-        .prompt(managerQuestion)
-        .then(answer => {
-            console.log("The name is: " + input.name);
-            console.log("The id is: " + input.id);
-            console.log("The email is: " + input.email);
-            console.log("The role is: " + input.role);
-            console.log("The number is: " + answer.officeNumber);
-        })
-    }
+    memberType = input.role;
+    
 })
 .catch(error => {
     console.log(error);
