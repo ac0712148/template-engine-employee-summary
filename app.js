@@ -35,7 +35,7 @@ const managerQuestions = [{
     message: "What is your manager's office number?"
 },{
     type: "list",
-    name: "role",
+    name: "nextRole",
     message: "Which type of team member would you like to add?",
     choices: ["Intern","Engineer","I don't want to add any more team members"]
 }];
@@ -58,7 +58,7 @@ const engineerQuestions = [{
     message: "What is your engineer's Github username?"
 },{
     type: "list",
-    name: "role",
+    name: "nextRole",
     message: "Which type of team member would you like to add?",
     choices: ["Intern","Engineer","I don't want to add any more team members"]
 }];
@@ -81,21 +81,55 @@ const internQuestions = [{
     message: "What is your intern's school?"
 },{
     type: "list",
-    name: "role",
+    name: "nextRole",
     message: "Which type of team member would you like to add?",
     choices: ["Intern","Engineer","I don't want to add any more team members"]
 }];
 var memberType;
+const employeeArr = [];
+
 inquirer
 .prompt(managerQuestions)
 .then(input => {
-    memberType = input.role;
-    
+    employeeArr.push(new Manager(input.name, input.id, input.email, input.specific));
+    memberType = input.nextRole;
+    // console.log("The next role is : " + memberType);
+    if(memberType === "Intern") { prepIntern(); }
+    else if(memberType === "Engineer") { prepEngineer(); }
+    else { printArray() }
 })
 .catch(error => {
     console.log(error);
     process.exit(1);
 })
+function prepEngineer() {
+    inquirer
+    .prompt(engineerQuestions)
+    .then(answer => {
+        employeeArr.push(new Engineer(answer.name, answer.id, answer.email, answer.specific));
+        memberType = answer.nextRole;
+        if(memberType === "Intern") { prepIntern(); }
+        else if(memberType === "Engineer") { prepEngineer(); }
+        else { printArray() }
+    })
+}
+function prepIntern() {
+    inquirer
+    .prompt(internQuestions)
+    .then(answer => {
+        employeeArr.push(new Intern(answer.name, answer.id, answer.email, answer.specific));
+        memberType = answer.nextRole;
+        if(memberType === "Intern") { prepIntern(); }
+        else if(memberType === "Engineer") { prepEngineer(); }
+        else { printArray() }
+    })
+}
+
+function printArray() {
+    for(let j = 0; j < employeeArr.length; j++) {
+        console.log(employeeArr[j]);
+    }
+}
 
 
 // After the user has input all employees desired, call the `render` function (required
